@@ -1,4 +1,4 @@
 facebook_messages_downloader
 ============================
 
-A Symfony project created on June 24, 2017, 12:32 pm.
+This fantastic piece of experimental death machine will make you able to download your messages from facebook in easy way.
