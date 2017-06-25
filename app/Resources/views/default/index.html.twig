@@ -2,4 +2,36 @@
 
 {% block body %}
 
+    {% if username is defined %}
+        {{ username }}
+
+    {% elseif facebookLoginUrl is defined %}
+        <p>Login with Facebook</p>
+        <p><a href="{{ facebookLoginUrl }}">Sign in!</a></p>
+
+    {% endif %}
+
+
+    {% if posts is defined %}
+        {% for post in posts.data %}
+
+            {% if post.story is defined %}
+                <div class="alert alert-success" role="alert">
+                    <b>{{ post.created_time|date('Y-m-d H:i:s') }}</b>
+                    {{ post.story }}
+                </div>
+            {% endif %}
+
+            {% if post.message is defined %}
+                <div class="alert alert-info" role="alert">
+                    <b>{{ post.created_time|date('Y-m-d H:i:s') }}</b>
+                    {{ post.message|raw }}
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+    {% endif %}
+
+
 {% endblock %}
