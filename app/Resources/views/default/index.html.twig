@@ -34,4 +34,31 @@
     {% endif %}
 
 
+    {% if photos is defined %}
+        {% for album in photos %}
+
+            {% for photos in album %}
+
+                {% for photo in photos %}
+                    <div class="col-xs-12 col-sm-6 col-md-4" style="float: left;">
+                        <div class="alert alert-success" role="alert">
+                            <p>
+                                <b>Source: </b><a href="{{ photo.source }}" target="_blank">Open</a>
+                            </p>
+                            <p>
+                                <b>Height: </b> {{ photo.height }}
+                                <b>Width: </b> {{ photo.width }}
+                            </p>
+
+                            <img src="{{ photo.source }}" class="img-responsive" style="max-width: 100px;">
+                        </div>
+                    </div>
+                {% endfor %}
+
+            {% endfor %}
+
+        {% endfor %}
+
+    {% endif %}
+
 {% endblock %}

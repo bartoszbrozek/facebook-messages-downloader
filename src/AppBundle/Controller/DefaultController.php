@@ -58,11 +58,37 @@ class DefaultController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/photos", name="getPhotos")
+     */
+    public function getPhotosAction()
+    {
+        return $this->render('default/index.html.twig', [
+            'photos' => $this->getFacebookPhotos()
+        ]);
+    }
+
+
+    private function getFacebookPhotos()
+    {
+        $response = $this->getFacebookResponse('/me/photos');
+
+        $decodedBody = $response->getDecodedBody();
+
+        foreach ($decodedBody['data'] as $key => $d) {
+            $imageId = $d['id'];
+            $imageResponse = $this->getFacebookResponse("/$imageId?fields=images&type=large&limit=0");
+            $decodedImageResponse = $imageResponse->getDecodedBody();
+            $photoData[] = $decodedImageResponse;
+        }
+
+        return $photoData;
+    }
 
     private function getFacebookUsername()
     {
         $response = $this->getFacebookResponse('/me?fields=id,name');
-        return $user = $response->getGraphUser();
+        return $response->getGraphUser();
     }
 
     private function getFacebookPosts()
@@ -151,7 +177,7 @@ class DefaultController extends Controller
     {
         $helper = $this->fb->getRedirectLoginHelper();
 
-        $permissions = ['email', 'user_posts'];
+        $permissions = ['email', 'user_posts', 'user_photos'];
 
         $loginUrl = $helper->getLoginUrl('http://local.fbm.com/facebook_messages_downloader/web/app_dev.php/facebookLogin', $permissions);
 
